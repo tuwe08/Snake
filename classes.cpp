@@ -81,7 +81,6 @@ bool map(Player &player, Area &area, Trail &trail) {
         cout << endl;
     }
     cout << endl;
-    //cout << trail.arr[trail.n] << endl << trail.arr[trail.n + 1] << endl;
 
     area.y = area.y - 2;
     area.x = area.x - 2;
