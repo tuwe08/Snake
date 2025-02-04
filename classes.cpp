@@ -32,6 +32,27 @@ class Point {
         }
 };
 
+class Player{
+public:
+    Point location;
+    void Set(int x, int y) {
+        location.x = x;
+        location.y = y;
+    }
+    void MoveLeft() {
+        location.x = location.x - 1;
+    }
+    void MoveRight() {
+        location.x = location.x + 1;
+    }
+    void MoveDown() {
+        location.y = location.y + 1;
+    }
+    void MoveUp() {
+        location.y = location.y - 1;
+    }
+};
+
 class Game{
 public:
     void New() {
@@ -80,12 +101,13 @@ private:
     }
 
     void Render() {
+        //system("cls");
         for (int row = 0; row < y; row++) { // Rows
             string line = "";
             for (int col = 0; col < x; col++) { // Cols
                 Point current;
-                current.x = row;
-                current.y = col;
+                current.y = row;
+                current.x = col;
 
                 // Borders
                 if (col == 0 || col == x - 1 || row == 0 || row == y - 1) {
@@ -112,26 +134,6 @@ private:
     }
 };
 
-class Player{
-public:
-    Point location;
-    void Set(int x, int y) {
-        location.x = x;
-        location.y = y;
-    }
-    void MoveLeft() {
-        location.x = location.x - 1;
-    }
-    void MoveRight() {
-        location.x = location.x + 1;
-    }
-    void MoveDown() {
-        location.y = location.y - 1;
-    }
-    void MoveUp() {
-        location.y = location.y + 1;
-    }
-};
 
 int main() {
     Game game;
