@@ -55,7 +55,7 @@ public:
 
 class Game{
 public:
-    void New() {
+    void StartNewGame() {
        // Initialise size.
        x = MAX_X;
        y = MAX_Y;
@@ -66,13 +66,16 @@ public:
 
        score = 0;
        playing = false;
+
+       Start();
     }
 
     void Start() {
         playing = true;
 
-        while(playing) {
+        while(playing) { // 17ms => 60 fps
             Input();
+            Update();
             Render();
             Sleep(100);
         }
@@ -98,6 +101,23 @@ private:
         else if (GetAsyncKeyState('D') & 0b1) {
             player.MoveRight();
         }
+    }
+
+    void Update() {
+        // 1. Check game end
+        if (isOutOfBound()) {
+            GameOver();
+            return;
+        }
+
+        // 2. Check if food eaten
+        if (player.location.Equal(food)) {
+            score++;
+            food.MakeRandom();
+            return;
+        }
+
+        // Anything else.
     }
 
     void Render() {
@@ -132,13 +152,32 @@ private:
             cout << line << endl;
         }
     }
+
+    bool isOutOfBounds() {
+        return player.location.x == 0 || 
+            player.location.x == x - 1 || 
+            player.location.y == 0 || 
+            player.location.y == y - 1; 
+    }
+
+    void GameOver() {
+        playing = false;
+
+        cout << endl << "You lost! You got " << score << "point! Try again (Y or N)?" << endl;
+
+        string input;
+        cin.get(input);
+
+        if(input == "Y") {
+            StartNewGame();
+        }
+    }
 };
 
 
 int main() {
     Game game;
-    game.New();
-    game.Start();
+    game.StartNewGame();
 
     return 0;
 }
