@@ -127,7 +127,7 @@ int main() {
     Area area;
     Player player;
     Trail trail;
-
+    //comment
     cout << "Please write the maps size(x, y): ";
     cin >> area.x >> area.y;
     area.x1 = area.RandomNumber(area.x);
