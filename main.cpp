@@ -108,6 +108,7 @@ int main() {
     int x = 1, y = 1, steps = 0, score = 0;
     int x1 = RandomNumber(n);
     int y1 = RandomNumber(m);
+    
     map(n, m, x, y, x1, y1, steps, score);
     Input(x, y, n, m, x1, y1, steps, score);
     return 0;
