@@ -7,6 +7,10 @@ using namespace std;
 const int MAX_X = 10;
 const int MAX_Y = 10;
 
+void clear(){
+    cout << string(20, '\n');
+}
+
 class Point {
     public:
         int x = 0, y = 0;
@@ -27,7 +31,7 @@ class Point {
     private:
         int RandomNumber(int range){
             random_device rd;
-            uniform_int_distribution<int> dist(1, range);
+            uniform_int_distribution<int> dist(1, range - 2);
             return dist(rd);
         }
 };
@@ -54,6 +58,13 @@ public:
 };
 
 class Game{
+private:
+    int x, y;
+    Point food;
+    Player player;
+    int score;
+    bool playing;
+
 public:
     void StartNewGame() {
        // Initialise size.
@@ -77,35 +88,36 @@ public:
             Input();
             Update();
             Render();
-            Sleep(100);
+            Sleep(200);
         }
     }
 
 private:
-    int x, y;
-    Point food;
-    Player player;
-    int score;
-    bool playing;
-
     void Input() {
         if (GetAsyncKeyState('W') & 0b1) {
             player.MoveUp();
         }
-        else if (GetAsyncKeyState('A') & 0b1) {
-            player.MoveLeft();
-        }
         else if (GetAsyncKeyState('S') & 0b1) {
             player.MoveDown();
+        }
+        else if (GetAsyncKeyState('A') & 0b1) {
+            player.MoveLeft();
         }
         else if (GetAsyncKeyState('D') & 0b1) {
             player.MoveRight();
         }
     }
 
+    bool isOutOfBounds() {
+        return player.location.x == 0 || 
+            player.location.x == x - 1 || 
+            player.location.y == 0 || 
+            player.location.y == y - 1; 
+    }
+
     void Update() {
         // 1. Check game end
-        if (isOutOfBound()) {
+        if (isOutOfBounds()) {
             GameOver();
             return;
         }
@@ -121,7 +133,7 @@ private:
     }
 
     void Render() {
-        //system("cls");
+        clear();
         for (int row = 0; row < y; row++) { // Rows
             string line = "";
             for (int col = 0; col < x; col++) { // Cols
@@ -149,16 +161,13 @@ private:
                 }
             }
 
-            cout << line << endl;
+            cout << line;
+            if(row < y - 1){
+                cout << endl;
+            }
         }
     }
 
-    bool isOutOfBounds() {
-        return player.location.x == 0 || 
-            player.location.x == x - 1 || 
-            player.location.y == 0 || 
-            player.location.y == y - 1; 
-    }
 
     void GameOver() {
         playing = false;
@@ -166,7 +175,7 @@ private:
         cout << endl << "You lost! You got " << score << "point! Try again (Y or N)?" << endl;
 
         string input;
-        cin.get(input);
+        cin >> input;
 
         if(input == "Y") {
             StartNewGame();
